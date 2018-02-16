@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 
 	_ "github.com/mattn/go-oci8"
@@ -39,6 +40,7 @@ func getJSON(db *sql.DB, sqlString string) (string, error) {
 	tableData := make([]map[string]interface{}, 0)
 	values := make([]interface{}, count)
 	valuePtrs := make([]interface{}, count)
+	first := true
 	for rows.Next() {
 		for i := 0; i < count; i++ {
 			valuePtrs[i] = &values[i]
@@ -60,6 +62,16 @@ func getJSON(db *sql.DB, sqlString string) (string, error) {
 			}
 		}
 		tableData = append(tableData, entry)
+
+		if first {
+			first = false
+
+			for i, col := range values {
+				if col != nil {
+					fmt.Printf("%s: type= %s\n", columns[i], reflect.TypeOf(col))
+				}
+			}
+		}
 	}
 	jsonData, err := json.Marshal(tableData)
 	if err != nil {
