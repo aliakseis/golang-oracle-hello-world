@@ -28,12 +28,32 @@ func helloWorld(db *sql.DB) {
 	}
 }
 
+// https://github.com/golang/go/commit/2a85578b0ecd424e95b29d810b7a414a299fd6a7
+func traceColumnTypes(rows *sql.Rows) {
+	tt, err := rows.ColumnTypes()
+	if err != nil {
+		fmt.Printf("ColumnTypes: %v\n", err)
+	}
+
+	for _, tp := range tt {
+		st := tp.ScanType()
+		if st == nil {
+			fmt.Printf("scantype is null for column %q\n", tp.Name())
+			continue
+		}
+		fmt.Printf("scantype is %q for column %q\n", st.Name(), tp.Name())
+	}
+}
+
 func getJSON(db *sql.DB, sqlString string) (string, error) {
 	rows, err := db.Query(sqlString)
 	if err != nil {
 		return "", err
 	}
 	defer rows.Close()
+
+	traceColumnTypes(rows)
+
 	columns, err := rows.Columns()
 	if err != nil {
 		return "", err
