@@ -7,7 +7,9 @@ import (
 	"reflect"
 	"strconv"
 
-	_ "github.com/mattn/go-oci8"
+	//_ "github.com/mattn/go-oci8"
+	//_ "gopkg.in/goracle.v2"
+	_ "gopkg.in/rana/ora.v4" // https://github.com/rana/ora
 )
 
 func helloWorld(db *sql.DB) {
@@ -83,7 +85,9 @@ func getJSON(db *sql.DB, sqlString string) (string, error) {
 
 func main() {
 	// db, err := sql.Open("oci8", "username/password@localhost:1521/xe")
-	db, err := sql.Open("oci8", "system/adm123@localhost:1521/xe")
+	//db, err := sql.Open("oci8", "system/adm123@localhost:1521/xe")
+	//db, err := sql.Open("goracle", "system/adm123@localhost:1521/xe")
+	db, err := sql.Open("ora", "system/adm123@localhost:1521/xe")
 	if err != nil {
 		fmt.Println(err)
 		return
