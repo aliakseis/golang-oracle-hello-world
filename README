@@ -1,0 +1,57 @@
+# Basic stuff:
+
+sudo yum install golang
+
+sudo yum install git
+
+# Oracle:
+
+# http://download.oracle.com/otn/linux/instantclient/122010/oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm
+# http://download.oracle.com/otn/linux/instantclient/122010/oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm
+# http://download.oracle.com/otn/linux/instantclient/122010/oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm
+
+sudo yum install oracle-instantclient12.2-basic-12.2.0.1.0-1.x86_64.rpm
+sudo yum install oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.x86_64.rpm
+sudo yum install oracle-instantclient12.2-devel-12.2.0.1.0-1.x86_64.rpm
+echo -e 'export ORACLE_HOME=/usr/lib/oracle/12.2/client64\nexport PATH=$PATH:$ORACLE_HOME/bin' | sudo tee -a /etc/profile.d/oracle.sh && sudo chmod o+r /etc/profile.d/oracle.sh
+source /etc/profile.d/oracle.sh
+
+echo -e '/usr/lib/oracle/12.2/client64/lib/' | sudo tee -a /etc/ld.so.conf.d/oracle.conf && sudo chmod o+r /etc/ld.so.conf.d/oracle.conf
+sudo ldconfig
+
+# go-oci8
+
+echo -e 'prefixdir=/usr/lib/oracle/12.2/client64\nlibdir=${prefixdir}/lib\nincludedir=/usr/include/oracle/12.2/client64\n\nName: OCI\nDescription: Oracle database driver\nVersion: 12.2\nLibs: -L${libdir} -lclntsh\nCflags: -I${includedir}' | sudo tee -a /usr/lib64/pkgconfig/oci8.pc && sudo chmod o+r /usr/lib64/pkgconfig/oci8.pc
+go get github.com/mattn/go-oci8
+
+# goracle
+
+go get gopkg.in/goracle.v2
+
+# https://github.com/rana/ora
+
+go get gopkg.in/rana/ora.v4
+
+# Windows stuff:
+
+# http://www.wadewegner.com/2014/12/easy-go-programming-setup-for-windows/
+
+# https://stackoverflow.com/questions/1710922/how-to-install-pkg-config-in-windows/25605631#25605631
+# https://sourceforge.net/projects/pkgconfiglite/?source=typ_redirect
+# Create PkgConfig directory and set PKG_CONFIG_PATH evironment variable pointing to it.
+# For example PKG_CONFIG_PATH=C:\Users\All Users\PkgConfig
+# Put oci8.pc file there. Use Unix path separators in this file.
+
+go get -v github.com/uudashr/gopkgs/cmd/gopkgs
+
+# Install and set up MSYS2 according to https://github.com/mattn/go-sqlite3/issues/214
+# This worked for me:
+# Install MSYS2 x86_64 from https://msys2.github.io/
+# In MSYS2 shell: pacman -S mingw-w64-x86_64-make mingw-w64-x86_64-gcc
+# Add C:\msys64\mingw64\bin and C:\msys64\usr\bin to PATH
+# Use mingw32-make.exe as make
+
+# in the beginning of oratypes.h add #define _int64 __int64
+
+# https://code.visualstudio.com/docs/languages/go
+# https://marketplace.visualstudio.com/items?itemName=lukehoban.Go
