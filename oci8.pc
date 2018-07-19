@@ -1,0 +1,15 @@
+prefix=/devel/target/XXXXXXXXXXXXXXXXXXXXXXXXXX
+exec_prefix=${prefix}
+libdir=c:/oraclexe/app/oracle/product/11.2.0/server/oci/lib/msvc
+includedir=c:/oraclexe/app/oracle/product/11.2.0/server/oci/include
+
+glib_genmarshal=glib-genmarshal
+gobject_query=gobject-query
+glib_mkenums=glib-mkenums
+
+Name: oci8
+Description: oci8 library
+Libs: -L${libdir} -loci
+Cflags: -I${includedir}
+Version: 11.2
+
